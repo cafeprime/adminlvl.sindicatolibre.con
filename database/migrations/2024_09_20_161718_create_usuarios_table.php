@@ -22,11 +22,7 @@ return new class extends Migration
             $table->timestamp('FECHA_CREACION')->useCurrent();
             $table->string('FOTO')->nullable();
             $table->integer('ACTIVADO')->default(1);
-        });
-        Schema::create('roles', function (Blueprint $table) {
-            $table->string('ID_ROL')->primary();
-            $table->string('ROL');
-        });
+        });        
     }
 
     /**
@@ -35,6 +31,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('usuarios');
-        Schema::dropIfExists('roles');
     }
 };
