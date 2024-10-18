@@ -38,7 +38,8 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'usuarios',
+            // 'provider' => 'users', //Comento esto ya que uso mi propia base de datos de usuarios
         ],
     ],
 
@@ -60,9 +61,11 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'usuarios' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\Usuario::class,
+            // 'model' => env('AUTH_MODEL', App\Models\User::class),
+            
         ],
 
         // 'users' => [

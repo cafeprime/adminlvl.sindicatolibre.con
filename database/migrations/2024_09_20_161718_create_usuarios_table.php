@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('CONTRASENA');
             $table->string('PROVINCIA');
             $table->string('ID_SESION');
+            $table->integer('ROL')->default(2);
             $table->timestamp('FECHA_CREACION')->useCurrent();
             $table->string('FOTO')->nullable();
             $table->integer('ACTIVADO')->default(1);
