@@ -30,29 +30,41 @@
 
         <!--- Sidemenu -->
         <div id="sidebar-menu">
-
             <ul id="side-menu">
-                <li class="menu-title">
-                <li class="menu-title">Registros</li>
-                <li><a href="registros-listar"><i data-feather="list" class="icon-dual"></i><span> Listar
-                            registros </span></a></li>
-                <li><a href="registros-crear"><i data-feather="edit-2" class="icon-dual"></i><span> Crear
-                            registro </span></a></li>
-                <li><a href="registros-listar-modificados"><i data-feather="repeat" class="icon-dual"></i><span>
-                            Listar modificados </span></a></li>
-                <li><a href="registros-listar-eliminados"><i data-feather="trash-2" class="icon-dual"></i><span>
-                            Listar eliminados </span></a></li>
-                <li class="menu-title">
-                <li class="menu-title">Administradores</li>
-                <li><a href="administradores-listar"><i data-feather="users" class="icon-dual"></i><span> Listar
-                            administradores </span></a></li>
-                <li><a href="administradores-crear"><i data-feather="user-plus" class="icon-dual"></i><span>
-                            Crear administrador </span></a></li>
-                <li class="menu-title">
-                <li class="menu-title">Configuración</li>
-                <li><a href="opciones"><i data-feather="sliders" class="icon-dual"></i><span> Opciones
-                        </span></a></li>
-            </ul>
+                <!-- Opción para todos los roles -->
+                @php
+                    $role = session('rol');
+                @endphp
+
+                @if(in_array($role, ['Superadmin', 'Administrador', 'Admincursos', 'Adminplan2']))
+                        <li class="menu-title"></li>
+                        <li class="menu-title">Registros</li>
+                        <li><a href="{{ route('registros.listar') }}"><i data-feather="list" class="icon-dual"></i><span> Listar registros </span></a></li>
+                        @if(in_array($role, ['Superadmin', 'Administrador']))
+                            <li><a href="{{ route('registros.crear') }}"><i data-feather="edit-2" class="icon-dual"></i><span> Crear registro </span></a></li>
+                        @endif
+                        <li><a href="{{ route('registros.modificados') }}"><i data-feather="repeat" class="icon-dual"></i><span> Listar modificados </span></a></li>
+                        @if(in_array($role, ['Superadmin', 'Admincursos', 'Adminplan2']))
+                            <li><a href="{{ route('registros.eliminados') }}"><i data-feather="trash-2" class="icon-dual"></i><span> Listar eliminados </span></a></li>
+                        @endif
+                        <!-- Opciones adicionales solo para Superadmin -->
+                        @if($role === 'Superadmin')
+                            <li class="menu-title"></li>
+                            <li class="menu-title">Administradores</li>
+                            <li><a href="{{ route('administradores.listar') }}"><i data-feather="users" class="icon-dual"></i><span> Listar administradores </span></a></li>
+                            <li><a href="administradores-crear"><i data-feather="user-plus" class="icon-dual"></i><span>
+                                        Crear administrador </span></a></li>
+                        @endif
+        
+                        @if($role === 'Superadmin')
+                            <li class="menu-title"></li>
+                            <li class="menu-title">Configuración</li>
+                            <li><a href="{{ route('opciones') }}"><i data-feather="sliders" class="icon-dual"></i><span> Opciones </span></a></li>                        
+                            <!-- Añadir aquí más opciones si es necesario -->
+                        @endif
+                    </ul>
+                @endif
+    
 
         </div>
         <!-- End Sidebar -->

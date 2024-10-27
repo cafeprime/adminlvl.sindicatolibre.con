@@ -23,7 +23,7 @@ class RegistrosController extends Controller
         $cursos = Curso::all(); // Obtiene todos los cursos
         $provincias = Provincia::orderBy('PROVINCIA', 'asc')->get(); // Obtiene provincias ordenadas
 
-        return view('alumnos.listar', [
+        return view('registros.listar', [
             'registros' => $registros,
             'totalRegistros' => $totalRegistros,
             'cursos' => $cursos,
@@ -33,7 +33,7 @@ class RegistrosController extends Controller
     
     public function modificar($reg){
         $registro = Registro::where('IDREGISTRO', $reg)->firstOrFail();
-        return view('alumnos.modificar', ['registro'=> $registro]);
+        return view('registros.modificar', ['registro'=> $registro]);
     }
 
     public function obtenerCursos(){
