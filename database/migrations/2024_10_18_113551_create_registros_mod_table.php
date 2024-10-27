@@ -33,8 +33,6 @@ return new class extends Migration
             $table->timestamp('FECHA_ELIMINACION')->nullable();
             $table->integer('ELIMINADO_POR')->nullable();
             $table->boolean('SUBIDO_MASIVAMENTE')->default(0);
-            $table->boolean('VISTO')->default(1); //eliminar este campo cuando se traigan los datos de la tabla original
-            $table->boolean('NOTIFICADO')->default(1); //eliminar este campo cuando se traigan los datos de la tabla original
             $table->primary(['IDMODIFICADO', 'IDREGISTRO', 'DNI', 'DNI_LETRA', 'PROVINCIA', 'EMAIL', 'ADMINREG']);
         });
     }

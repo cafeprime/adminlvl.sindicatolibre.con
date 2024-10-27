@@ -32,4 +32,10 @@ class Usuario extends Model implements Authenticatable
     {
         return $this->CONTRASENA;
     }
+
+    // Relación con la tabla roles
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'ROL', 'ID_ROL');
+    }
 }

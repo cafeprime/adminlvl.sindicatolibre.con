@@ -21,10 +21,10 @@
         <div class="logo-box">
             <a href="/inicio" class="logo logo-light text-center">
                 <span class="logo-sm">
-                    <img src="./views/images/logo-sm.png" alt="" height="50">
+                    <img src="/images/logo-sm.png" alt="" height="50">
                 </span>
                 <span class="logo-lg">
-                    <img src="./views/images/logo-light.png" alt="" height="40">
+                    <img src="/images/logo-light.png" alt="" height="40">
                 </span>
             </a>
         </div>

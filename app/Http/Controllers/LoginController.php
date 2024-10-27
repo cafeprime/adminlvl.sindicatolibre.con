@@ -32,7 +32,7 @@ class LoginController extends Controller
         $user = Usuario::where('USUARIO', $request->input('usuario'))->first();
 
         // Verificar que el usuario exista y que la contraseña coincida
-        if ($user && $this->checkPassword($request->input('password'), $user->CONTRASENA)) {
+        if ($user && password_verify($request->input('password'), $user->CONTRASENA)) {
             
             // Autenticar al usuario usando el guard personalizado
             Auth::guard('web')->login($user);
@@ -56,10 +56,15 @@ class LoginController extends Controller
             Session::put('idsesion', $user->ID_SESION);
             Session::put('nombre', $user->NOMBRE);
             Session::put('provincia', $user->PROVINCIA);
-            Session::put('rol', $user->ROL);
+            Session::put('rol', $user->rol->ROL);
+
+            $url_imagenes = "/images/users/";
             if (!empty($user->FOTO)) {
-                Session::put('foto', $user->FOTO);
+                Session::put('foto', $url_imagenes.$user->FOTO);
+            } else {
+                Session::put('foto', $url_imagenes."user-noimg.png");
             }
+
             return response()->json('ok');
         }
 
@@ -95,10 +100,10 @@ class LoginController extends Controller
         
         // Crear el usuario en la base de datos
         Usuario::create([
-            'ID_USUARIO' => md5($nombreUsuario), // Aquí podrías generar un ID diferente si necesitas
+            'ID_USUARIO' => 1, // Aquí podrías generar un ID diferente si necesitas
             'NOMBRE' => $nombreReal,
             'USUARIO' => $nombreUsuario,
-            'CONTRASENA' => md5($contrasena), // Generar la contraseña usando MD5
+            'CONTRASENA' => password_hash($contrasena, PASSWORD_DEFAULT), // Generar la contraseña usando passwrod_hash
             'PROVINCIA' => $provincia,
             'ID_SESION' => $idSesion,
             'ROL' => 1, // Asignar el rol

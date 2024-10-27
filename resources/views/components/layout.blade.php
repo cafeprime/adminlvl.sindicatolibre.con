@@ -22,7 +22,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.31/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
 
-    <script src="./views/js/registros-listar.min.js?ver=fc50e2ba342d2abbc5455cb514c3962e"></script>
     <style>
         .close-jq-toast-single {
             top: -12px;

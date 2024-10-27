@@ -4,11 +4,11 @@
 
         <!-- User box -->
         <div class="user-box text-center">
-            <img src="./views/images/users/user-noimg.png" alt="user-img" class="rounded-circle avatar-md">
+            <img src="{{ session("foto") }}" alt="user-img" class="rounded-circle avatar-md">
             <div class="dropdown">
                 <a href="javascript: void(0);" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
                     data-toggle="dropdown"><i data-feather="power" class="icon-dual" style="width:15px;"></i>
-                    Técnico</a>
+                    {{ session("nombre") }}</a>
                 <div class="dropdown-menu user-pro-dropdown">
 
                     <a href="cambiar-password" class="dropdown-item notify-item">
@@ -23,14 +23,13 @@
 
                 </div>
             </div>
-            <p class="text-muted">Superadmin </p>
-            <a href="/inicio" style="color:#b2bcc2;"><i data-feather="home" class="icon-dual"
+            <p class="text-muted">{{ session("rol") }} </p>
+            <a href="/registros-listar" style="color:#b2bcc2;"><i data-feather="home" class="icon-dual"
                     style="width:15px;vertical-align:bottom"></i> Inicio</a>
         </div>
 
         <!--- Sidemenu -->
         <div id="sidebar-menu">
-
 
             <ul id="side-menu">
                 <li class="menu-title">
