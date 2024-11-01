@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('provincias', function (Blueprint $table) {
-            $table->increments('IDPROVINCIA');
+            $table->increments('ID_PROVINCIA');
             $table->string('PROVINCIA', 100);
             $table->string('ID_PROV_ENC', 255);
-            $table->primary(['IDPROVINCIA', 'ID_PROV_ENC']);
+            $table->primary(['ID_PROVINCIA', 'ID_PROV_ENC']);
         });
     }
 

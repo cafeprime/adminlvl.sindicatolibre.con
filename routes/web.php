@@ -6,26 +6,43 @@ use App\Http\Controllers\RegistrosController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-//PARA CREAR UN USUARIO DE PRUEBA
 Route::get('/crear-usuario-prueba', [LoginController::class, 'createTestUser']);
 
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('ajaxlogin', [LoginController::class, 'ajaxlogin']);
 Route::get('logout', [LoginController::class, 'logout'])->middleware('auth');
-Route::get('cambiar-password', [PasswordController::class, 'formulario'])->middleware('auth');
-
 Route::get('registros-listar', [RegistrosController::class, 'index'])->name('registros.listar')->middleware('auth');
-Route::get('registros-crear', [RegistrosController::class, 'crear'])->name('registros.crear')->middleware('auth');
-Route::get('registros-modificar/{reg}', [RegistrosController::class, 'modificar'])->name('registros.modificar')->middleware('auth');
 
-Route::get('registros-listar-modificados', [RegistrosController::class, 'index'])->name('registros.modificados')->middleware('auth');
-Route::get('registros-listar-eliminados', [RegistrosController::class, 'index'])->name('registros.eliminados')->middleware('auth');
+// Superadmin
+Route::middleware(['auth', 'role:Superadmin'])->group(function () {
+    Route::get('registros-crear', [RegistrosController::class, 'crear'])->name('registros.crear');
+    Route::get('registros-modificar/{reg}', [RegistrosController::class, 'modificar'])->name('registros.modificar');
+    Route::get('registros-listar-modificados', [RegistrosController::class, 'listarModificados'])->name('registros.listar.modificados');
+    Route::get('registros-listar-eliminados', [RegistrosController::class, 'listarEliminados'])->name('registros.listar.eliminados');
+    Route::get('administradores-listar', [RegistrosController::class, 'index'])->name('administradores.listar');
+    Route::get('administradores-crear', [RegistrosController::class, 'crear'])->name('administradores.crear');
+    Route::get('administradores-modificar/{reg}', [RegistrosController::class, 'modificar'])->name('administradores.modificar');
+    Route::get('opciones', [RegistrosController::class, 'index'])->name('opciones');
+});
 
-Route::get('administradores-listar', [RegistrosController::class, 'index'])->name('administradores.listar')->middleware('auth');
-Route::get('administradores-crear', [RegistrosController::class, 'crear'])->name('administradores.crear')->middleware('auth');
-Route::get('administradores-modificar/{reg}', [RegistrosController::class, 'modificar'])->name('administradores.modificar')->middleware('auth');
+// Administrador
+Route::middleware(['auth', 'role:Administrador'])->group(function () {    
+    Route::get('registros-crear', [RegistrosController::class, 'crear'])->name('registros.crear');
+    Route::get('registros-modificar/{reg}', [RegistrosController::class, 'modificar'])->name('registros.modificar');
+    Route::get('registros-listar-modificados', [RegistrosController::class, 'listarModificados'])->name('registros.listar.modificados');
+});
 
-Route::get('opciones', [RegistrosController::class, 'index'])->name('opciones')->middleware('auth');
+// Admincursos
+Route::middleware(['auth', 'role:Admincursos'])->group(function () {
+    Route::get('registros-listar-modificados', [RegistrosController::class, 'listarModificados'])->name('registros.listar.modificados');
+    Route::get('registros-listar-eliminados', [RegistrosController::class, 'listarEliminados'])->name('registros.listar.eliminados');
+});
+
+// Adminplan2
+Route::middleware(['auth', 'role:Adminplan2'])->group(function () {    
+    Route::get('registros-listar-modificados', [RegistrosController::class, 'listarModificados'])->name('registros.listar.modificados');
+    Route::get('registros-listar-eliminados', [RegistrosController::class, 'listarEliminados'])->name('registros.listar.eliminados');
+});
 
 // Así nombramos rutas
 // Route::get('/url1/{var}', function () {

@@ -1,4 +1,7 @@
 <x-layout meta-title="Listar registros" meta-description="Listado de registros de alumnos por provincias">
+    {{-- SCRIPTS --}}
+    <x-slot name="jsextras">@vite(['resources/js/registros-listar.js'])</x-slot>
+
     <!-- Begin page -->
     <div id="wrapper">
 
@@ -41,15 +44,15 @@
                                         <div class="col-xl-8 col-lg-7 col-md-6">
                                             <div class="row mb-2">
                                                 <div class="form-group col-lg-4">
-                                                    <input type="search" class="form-control" id="txtbusca"
-                                                        placeholder="Buscar..." maxlength="80">
-                                                </div>
-
-                                                <div class="form-group col-lg-3">
+                                                    <input type="search" class="form-control" id="txtbusca" placeholder="Buscar..." maxlength="80">
+                                                </div>                                               
+                                                <div class="form-group col-lg-3">                                                    
                                                     <select class="form-control" id="provincia" name="provincia">
-                                                        <option value="0">Todas las provincias</option>
-                                                        @foreach ($provincias as $provincia)
-                                                            <option value="{{ $provincia->IDPROVINCIA }}">{{ $provincia->PROVINCIA }}</option>
+                                                        <option value="0">Todas</option>
+                                                        @foreach ($provincias as $provincia)                                                        
+                                                            <option value="{{ $provincia->ID_PROVINCIA }}" {{ $provinciaId == $provincia->ID_PROVINCIA ? 'selected' : '' }}>
+                                                                {{ $provincia->PROVINCIA }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -63,20 +66,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador')
-                                            <div class="col-xl-4 col-lg-5 col-md-6">
-                                                <a class="btn btn-success btn-rounded waves-effect waves-light"
-                                                    data-toggle="modal" data-target="#importar" href="#"
-                                                    style="float:right;margin-left:10px;margin-bottom:10px;"><span
-                                                        class="btn-label"><i class="mdi mdi-file-excel"></i></span>
-                                                    Carga
-                                                    Excel</a>
-                                                <a class="btn btn-success btn-rounded waves-effect waves-light"
-                                                    data-toggle="modal" data-target="#informes" href="#"
-                                                    style="float:right;"><span class="btn-label"><i
-                                                            class="mdi mdi-file-excel"></i></span> Generar informe</a>
-                                            </div>
-                                        @endif
+                                        @role('Superadmin', 'Administrador')
+                                        <div class="col-xl-4 col-lg-5 col-md-6">
+                                            <a class="btn btn-success btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#importar" href="#" style="float:right;margin-left:10px;margin-bottom:10px;"><span class="btn-label"><i class="mdi mdi-file-excel"></i></span> Carga Excel</a>
+                                            <a class="btn btn-success btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#informes" href="#" style="float:right;"><span class="btn-label"><i class="mdi mdi-file-excel"></i></span> Generar informe</a>
+                                        </div>
+                                        @endrole
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-lg-12 table-responsive">
@@ -84,14 +79,14 @@
                                                 class="table-bordered table table-hover"style="display: table;">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador')
+                                                        @role('Superadmin', 'Administrador')
                                                             <th class="bs-checkbox " style="width: 36px;">
                                                                 <div class="th-inner "><label><input name="selectAll"
                                                                             type="checkbox"
                                                                             class="selectAll"><span></span></label>
                                                                 </div>
                                                             </th>
-                                                        @endif
+                                                        @endrole
                                                         <th>
                                                             <div class="th-inner ">Nombre y apellidos</div>
                                                         </th>
@@ -117,13 +112,13 @@
                                                     </tr>
                                                     @foreach ($registros as $registro)
                                                         <tr>
-                                                            @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador')
+                                                            @role('Superadmin', 'Administrador')
                                                                 <td class="bs-checkbox" style="width:36px;"><input type="checkbox" class="delCheck" value="{{ $registro->IDREGISTRO }}"></td>
-                                                            @endif
+                                                            @endrole
                                                             <td>{{ $registro->NOMBRE . ' ' . $registro->APELLIDO1 . ' ' . $registro->APELLIDO2 }}</td>
                                                             <td>{{ $registro->DNI . $registro->DNI_LETRA }}</td>
                                                             <td><a href="mailto:{{ $registro->EMAIL }}"><small>{{ $registro->EMAIL }}</small></a><br><x-icono-telefono></x-icono-telefono>{{ $registro->TELEFONO }}</td>
-                                                            <td>VALENCIA</td>
+                                                            <td>{{ $registro->PROVINCIA }}</td>
                                                             <td>{{ $registro->FECHA_INSCRIPCION }}<br></td>
                                                             <td><a href="/registros-modificar/{{ $registro->IDREGISTRO }}"><x-icono-modificar></x-icono-modificar></a></td>
                                                         </tr>
@@ -141,7 +136,7 @@
 
                                             {{-- Con esto cambiamos la varible por defecto page a p tal como tenía en mi App antigua. Si guiero usar lo nuevo pongo sólo $registros->links() --}}
                                             {{-- Como Quería cmabiar los estilos de las páginas adaptándolas al antiguo diseño hice esto en el terminal: "php artisan vendor:publish --tag=laravel-pagination" que me compió la lógica de la paginación de bootstrap en resources/vendor/pagination y ahí pude retocar la página boostrap-4.blade.php --}}
-                                            {!! str_replace('page=', 'p=', $registros->links()) !!}
+                                            {!! str_replace('page=', 'p=', $registros->appends(['v' => request('v'), 't' => request('t')])->links()) !!}
 
                                         </div>
                                     </div>
@@ -153,7 +148,7 @@
                 </div> <!-- container -->
 
             </div> <!-- content -->
-            @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador')
+            @role('Superadmin', 'Administrador')
                 <div class="modal fade" id="informes" tabindex="-1" role="dialog" aria-labelledby="Informes"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -188,7 +183,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if (session('rol') == 'Superadmin')
+                                    @role('Superadmin')
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
@@ -199,9 +194,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    @endrole
 
-                                    @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador')
+                                    @role('Superadmin', 'Administrador')
                                         <div class="row">
                                             <div class="col-12">
                                                 <label><strong>Colectivo</strong></label>
@@ -234,9 +229,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    @endrole
 
-                                    @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador' || session('rol') == 'Adminplan2')
+                                    @role('Superadmin', 'Administrador', 'Adminplan2')
                                         <div class="row">
                                             <div class="col-12">
                                                 <label><strong>Formación para la consolidación de
@@ -328,9 +323,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    @endrole
 
-                                    @if (session('rol') == 'Superadmin' || session('rol') == 'Administrador' || session('rol') == 'Admincursos')
+                                    @role('Superadmin', 'Administrador', 'Admincursos')
                                         <div class="row">
                                             <div class="col-12">
                                                 <label><strong>Cursos</strong></label>
@@ -351,7 +346,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    @endrole
 
                                 </div>
                                 <div class="modal-footer">
@@ -395,9 +390,9 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endrole
 
-            @if (session('rol') == 'Superadmin')
+            @role('Superadmin')
                 <div class="modal fade" id="recuperarModal" tabindex="-1" role="dialog"
                     aria-labelledby="recuperarModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -421,7 +416,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endrole
 
             @include('partials.footer')
 

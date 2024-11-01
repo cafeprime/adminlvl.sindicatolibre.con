@@ -3,9 +3,7 @@
         <ul class="list-unstyled topnav-menu float-right mb-0">
 
             <li class="dropdown d-none d-lg-inline-block">
-                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen"
-                    href="#">
-                    <i class="fe-maximize noti-icon"></i>
+                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen" 
                 </a>
             </li>
             <li class="dropdown notification-list topbar-dropdown">

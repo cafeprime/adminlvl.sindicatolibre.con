@@ -38,4 +38,10 @@ class Usuario extends Model implements Authenticatable
     {
         return $this->belongsTo(Rol::class, 'ROL', 'ID_ROL');
     }
+
+    // Accesor para obtener el nombre del rol directamente
+    public function getRoleNameAttribute()
+    {
+        return $this->rol ? $this->rol->ROL : null; // Accede a la columna ROL en la relación
+    }
 }

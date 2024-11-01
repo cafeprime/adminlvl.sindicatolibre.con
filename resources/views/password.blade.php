@@ -1,4 +1,6 @@
 <x-layout meta-title="Listar registros" meta-description="Listado de registros de alumnos por provincias">
+
+    <x-slot name="jsextras">@vite(['resources/js/registros-listar.js'])</x-slot>
     <!-- Begin page -->
     <div id="wrapper">
     
